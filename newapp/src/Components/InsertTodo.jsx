@@ -33,32 +33,33 @@ export function InsertTodo({ visibility, vis }) {
     }
 
     function handleComplete(e) {
-        // if (e.target.checked) {
-        fetch('http://localhost:3001/todoist', {
-            method: 'PUT',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                id: e.target.value,
-                status: "1"
+        if (e.target.checked) {
+            fetch('http://localhost:3001/todoist', {
+                method: 'PUT',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    id: e.target.value,
+                    status: "1"
+                })
             })
-        })
-    }
-    if (!e.target.checked) {
-        fetch('http://localhost:3001/todoist', {
-            method: 'PUT',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                id: e.target.value,
-                status: "0"
+        }
+        if (!e.target.checked) {
+            fetch('http://localhost:3001/todoist', {
+                method: 'PUT',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    id: e.target.value,
+                    status: "0"
+                })
             })
-        })
-        fetchAp();
+            fetchAp();
+        }
     }
 
 
