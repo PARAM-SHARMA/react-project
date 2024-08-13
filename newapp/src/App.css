@@ -1,0 +1,45 @@
+#navbar {
+    height: 9vh;
+    min-height: 55px;
+}
+
+#enterTask {
+    transition: opacity 0.3s;
+}
+
+#floatBtn1 {
+    position: fixed;
+    float: right;
+    right: 30px;
+    bottom: 89px;
+    border-radius: 10px;
+}
+
+#floatBtn2 {
+    position: fixed;
+    float: right;
+    right: 30px;
+    bottom: 50px;
+    border-radius: 10px;
+}
+
+.notebookicon {
+    font-size: 100px;
+}
+
+#sidebar {
+    min-height: 91vh;
+    width: 100%;
+
+}
+
+/* 
+#insertTodo {
+    min-height: 337px;
+} */
+
+
+#footer {
+    /* position: absolute; */
+    bottom: 0;
+}
