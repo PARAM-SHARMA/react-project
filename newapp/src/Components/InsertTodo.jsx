@@ -7,6 +7,9 @@ export function InsertTodo({ visibility, vis }) {
     const [Task, setTask] = useState('');
     const [message, setMessage] = useState([]);
 
+    const taskItems = message.map(data => <li key={data.id}>{' '}{data.task}{' '}<button onClick={handleComplete}>Complete</button></li>);
+    /* <input type="checkbox" onChange={handleComplete} value={data.id} checked={data.status === '1' ? true : false} /> */
+
     function handleChange(e) {
         setTask(e.target.value);
     }
@@ -70,14 +73,17 @@ export function InsertTodo({ visibility, vis }) {
                 accept: 'application/json',
             },
         });
-        return response.json();
+        const data = await response.json();
+        setMessage(data);
     }
 
     useEffect(() => {
-        fetchAp().then((data) => {
-            setMessage(data);
-        });
-    });
+        fetchAp();
+
+        return () => {
+            setMessage([]);
+        }
+    }, []);
 
 
     return (
@@ -91,11 +97,7 @@ export function InsertTodo({ visibility, vis }) {
                         <input className="btn btn-danger col-1 mx-1" type="button" value={"X"} onClick={vis} />
                     </label>
                 </form>
-                <ul style={{ listStyle: 'number' }}>
-                    {
-                        message.map(data => { return <li key={data.id}><input type="checkbox" onChange={handleComplete} value={data.id} checked={data.status === '1' ? true : false} />{' '}{data.task}</li> })
-                    }
-                </ul>
+                <ul style={{ listStyle: 'number' }}>{taskItems}</ul>
             </section>
         </>
     )

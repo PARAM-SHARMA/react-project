@@ -13,15 +13,7 @@ export function Notes() {
     const id = NoteIdState.id;
     const notebookName = NoteIdState.name;
 
-    const getNotesById = async (e) => {
-        const response = await fetch(`http://localhost:3001/notebook/notes/${id}`, {
-            method: 'GET',
-            headers: {
-                accept: 'application/json',
-            },
-        });
-        return response.json();
-    }
+
 
     function handleTitle(e) {
         setTitle(e.target.value);
@@ -50,11 +42,27 @@ export function Notes() {
         });
     }
 
-
-
     useEffect(() => {
-        getNotesById().then((data) => setNotesById(data));
-    }, [notesById]); //api runs infinite times without it
+        async function getNotesById() {
+            const response = await fetch(`http://localhost:3001/notebook/notes/${id}`, {
+                method: 'GET',
+                headers: {
+                    accept: 'application/json',
+                },
+            });
+            const data = await response.json();
+            console.log('hlo')
+            setNotesById(data);
+        }
+        getNotesById();
+
+        return () => {
+            setNotesById([]);
+        }
+
+    }, [id]);
+
+    //api runs infinite times without it
 
 
     return (

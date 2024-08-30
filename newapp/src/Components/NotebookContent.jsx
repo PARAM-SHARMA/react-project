@@ -34,7 +34,8 @@ export function NotebookContent() {
             },
         })
 
-        return await response.json();
+        const data = await response.json();
+        setNotes(data);
     }
 
     const getNotebooks = async (e) => {
@@ -44,7 +45,8 @@ export function NotebookContent() {
                 accept: 'application/json',
             },
         });
-        return response.json();
+        const data = await response.json();
+        setNotebooks(data);
     }
 
 
@@ -89,12 +91,14 @@ export function NotebookContent() {
     }
 
     useEffect(() => {
-        getNotes().then((data) => setNotes(data));
-    }, [notes]);
+        getNotes()
+        getNotebooks()
 
-    useEffect(() => {
-        getNotebooks().then((data) => setNotebooks(data));
-    }, [notebooks])
+        return () => {
+            setNotes([]);
+            setNotebooks([]);
+        }
+    }, []);
 
     return (
         <>
@@ -124,24 +128,24 @@ export function NotebookContent() {
 
                 </div>
                 <h4 className='mb-2 text-secondary'>Notebooks</h4>
-                    <div className="row mb-4">
-                        {
-                            notebooks.map((data) => {
-                                return (
-                                    <div className="col-2 gy-4" key={data.id}>
-                                        <button className="card border-0 py-2" onClick={() => openNotebook(data.id, data.title)}>
-                                            <i className="fa fa-book text-dark notebookicon card-img-top text-center"></i>
-                                            <div className="card-body">
-                                                <input type="hidden" id='hid' value={data.id} />
-                                                <p className="card-text text-center">{data.title}</p>
-                                            </div>
-                                        </button>
-                                    </div>
-                                )
-                            })
-                        }
+                <div className="row mb-4">
+                    {
+                        notebooks.map((data) => {
+                            return (
+                                <div className="col-2 gy-4" key={data.id}>
+                                    <button className="card border-0 py-2" onClick={() => openNotebook(data.id, data.title)}>
+                                        <i className="fa fa-book text-dark notebookicon card-img-top text-center"></i>
+                                        <div className="card-body">
+                                            <input type="hidden" id='hid' value={data.id} />
+                                            <p className="card-text text-center">{data.title}</p>
+                                        </div>
+                                    </button>
+                                </div>
+                            )
+                        })
+                    }
 
-                    </div>
+                </div>
             </div>
 
             <div className="modal fade" id="viewNoteModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
