@@ -29,23 +29,20 @@ router.post('/editNote', (req, res) => {
     else {
         connection.query(`UPDATE notes SET title = ?, note = ? WHERE id = ?`, [title, note, id], (err) => {
             if (err) throw err;
-
             res.json("the data has been saved")
-            console.log("the data has been saved")
         })
     }
 })
 
 router.delete('/deleteNote', (req, res) => {
     let id = req.body.id;
-    if(id == null) {
+    if (id == null) {
         console.log('id is undefined');
     }
     else {
         connection.query(`DELETE FROM notes WHERE id = ?`, [id], (err) => {
-            if(err) throw err;
+            if (err) throw err;
             res.json("the data has been erased")
-            console.log("the data has been erased")
         })
     }
 })
@@ -59,7 +56,7 @@ router.post('/createnotebook', (req, res) => {
 
 router.get('/fetchnotebooks', (req, res) => {
     connection.query(`SELECT * FROM notebooks ORDER BY id DESC`, (err, result) => {
-        if(err) throw err;
+        if (err) throw err;
         res.json(result);
     })
 })
@@ -69,7 +66,7 @@ router.get('/notes/:id', (req, res) => {
     let id = req.params.id;
     // console.log('h');
     connection.query(`SELECT * FROM notes WHERE notebookId = '${id}' ORDER BY id DESC`, (err, result) => {
-        if(err) throw err;
+        if (err) throw err;
         res.json(result);
     })
 })
