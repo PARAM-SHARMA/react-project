@@ -1,0 +1,21 @@
+:root {
+  --primary: #0a58ca;
+  --secondary: #565e64;
+}
+
+.center {
+  height: 100vh;
+  margin-top: -50px;
+}
+
+.buttonPrimary:hover {
+  background-color: var(--primary) !important;
+  color: white !important;
+  transition: all 0.7s;
+}
+
+.buttonSecondary:hover {
+  background-color: var(--secondary) !important;
+  color: white !important;
+  transition: all 0.7s;
+}

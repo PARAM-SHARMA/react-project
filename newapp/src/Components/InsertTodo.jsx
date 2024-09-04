@@ -7,7 +7,7 @@ export function InsertTodo({ visibility, vis }) {
     const [Task, setTask] = useState('');
     const [message, setMessage] = useState([]);
 
-    const taskItems = message.map(data => <li key={data.id}>{' '}{data.task}{' '}<button onClick={handleComplete}>Complete</button></li>);
+    const taskItems = message.map(data => <li key={data.id} className={data.status === '0' ? 'crossed' : null}>{' '}{data.task}{' '}<button className='btn btn-primary bg-transparent border-0' onClick={() => handleComplete(data.status, data.id)}>{data.status === "1" ? "✅" : "❌"}</button></li>);
     /* <input type="checkbox" onChange={handleComplete} value={data.id} checked={data.status === '1' ? true : false} /> */
 
     function handleChange(e) {
@@ -35,36 +35,25 @@ export function InsertTodo({ visibility, vis }) {
         fetchAp();
     }
 
-    function handleComplete(e) {
-        if (e.target.checked) {
-            fetch('http://localhost:3001/todoist', {
+    async function handleComplete(status, id) {
+        const newStatus = status === '0' ? '1' : '0';
+        try {
+            await fetch('http://localhost:3001/todoist', {
                 method: 'PUT',
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    id: e.target.value,
-                    status: "1"
+                    id,
+                    status: newStatus
                 })
             })
-        }
-        if (!e.target.checked) {
-            fetch('http://localhost:3001/todoist', {
-                method: 'PUT',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    id: e.target.value,
-                    status: "0"
-                })
-            })
-            fetchAp();
+            await fetchAp();
+        } catch (error) {
+            console.log('Error updating task: ', error);
         }
     }
-
 
     const fetchAp = async () => {
         const response = await fetch(`http://localhost:3001/todoist`, {
@@ -82,6 +71,7 @@ export function InsertTodo({ visibility, vis }) {
 
         return () => {
             setMessage([]);
+            setTask('');
         }
     }, []);
 

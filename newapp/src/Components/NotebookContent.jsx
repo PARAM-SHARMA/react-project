@@ -50,9 +50,9 @@ export function NotebookContent() {
     }
 
 
-    function editNote(e) {
+    async function editNote(e) {
         e.preventDefault();
-        fetch('http://localhost:3001/notebook/editNote', {
+        await fetch('http://localhost:3001/notebook/editNote', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -63,9 +63,8 @@ export function NotebookContent() {
                 title: currentNote.title,
                 note: currentNote.note
             })
-        }).then(function (response) {
-            return response.json();
         });
+        getNotes();
     }
 
     function handleDeleteNote(id) {
@@ -105,7 +104,7 @@ export function NotebookContent() {
             <div className="container mt-5">
                 <h4 className='mb-2 text-secondary'>Notes</h4>
                 <div className="row mb-5">
-                    {
+                    {notes && notes.length > 0 ?
                         notes.map((data) => {
                             return (
                                 <div key={data.id} className="col-4 gy-4">
@@ -123,7 +122,9 @@ export function NotebookContent() {
                                     </div>
                                 </div>
                             )
-                        })
+                        }) : (
+                            <h1>No data found</h1>
+                        )
                     }
 
                 </div>

@@ -5,6 +5,7 @@ import React from 'react';
 import { Auth } from './Components/Views/Auth';
 import { Notes } from './Components/Views/Notes';
 import { TodoistIndex } from './Components/Views/TodoistIndex';
+import Index from './Components/Views/Index';
 
 
 export default function App() {
@@ -14,10 +15,11 @@ export default function App() {
             <BrowserRouter>
                 <Routes>
                     <Route path="/">
-                        <Route path="/auth" element={<Auth />}/>
+                        <Route path="/" element={<Index />} />
+                        <Route path="/auth" element={<Auth />} />
                         <Route path="/notebook" element={<Notebook />} />
                         <Route path="/todoist" element={<TodoistIndex />} />
-                        <Route path='/notebook/notes'  element={<Notes /> } />
+                        <Route path='/notebook/notes' element={<Notes />} />
                     </Route>
                 </Routes>
             </BrowserRouter>

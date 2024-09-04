@@ -43,3 +43,8 @@
     /* position: absolute; */
     bottom: 0;
 }
+
+.crossed {
+    text-decoration: line-through;
+    color: gray
+}
