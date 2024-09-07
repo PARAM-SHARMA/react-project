@@ -7,8 +7,7 @@ export function InsertTodo({ visibility, vis }) {
     const [Task, setTask] = useState('');
     const [message, setMessage] = useState([]);
 
-    const taskItems = message.map(data => <li key={data.id} className={data.status === '0' ? 'crossed' : null}>{' '}{data.task}{' '}<button className='btn btn-primary bg-transparent border-0' onClick={() => handleComplete(data.status, data.id)}>{data.status === "1" ? "✅" : "❌"}</button></li>);
-    /* <input type="checkbox" onChange={handleComplete} value={data.id} checked={data.status === '1' ? true : false} /> */
+    const taskItems = message.map(data => <li key={data.id} className={data.status === '1' ? 'crossed my-3' : 'my-3'}>{' '}{data.task}{' '}<button className='bg-transparent border-0' onClick={() => handleComplete(data.status, data.id)}>{data.status === "0" ? "✅" : "❌"}</button></li>);
 
     function handleChange(e) {
         setTask(e.target.value);
@@ -17,21 +16,25 @@ export function InsertTodo({ visibility, vis }) {
     function handleSubmit(e) {
         e.preventDefault();
         setTask(Task);
-        fetch('http://localhost:3001/todoist', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                name: Task
-            })
-        }).then(function (response) {
-            console.log(response)
-            return response.json();
-        }).catch(function (error) {
-            console.error('Error: ', error);
-        });
+        if (Task !== '') {
+            fetch('http://localhost:3001/todoist', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: Task
+                })
+            }).then(function (response) {
+                console.log(response)
+                return response.json();
+            }).catch(function (error) {
+                console.error('Error: ', error);
+            });
+        } else {
+            // show error continue
+        }
         fetchAp();
     }
 
@@ -79,15 +82,15 @@ export function InsertTodo({ visibility, vis }) {
     return (
         <>
             <section id='insertTodo' className="insert py-5 ps-5">
-                <form className='' id='enterTask' onSubmit={handleSubmit} style={visibility ? { display: "block", opacity: 1 } : { display: "none", opacity: 0 }}>
-                    <label className="border-0 row">
+                <ul style={{ listStyle: 'number' }}>{taskItems}</ul>
+                <form className='' id='enterTask' onSubmit={handleSubmit} style={visibility ? { display: "inline !important", opacity: 1 } : { opacity: 0 }}>
+                    <label className="border-0">
                         New Task {' '}
-                        <input className='col-4 mx-1' type="text" onChange={handleChange} />
-                        <input className="btn btn-primary col-2 mx-1" type="submit" value={"submit"} />
-                        <input className="btn btn-danger col-1 mx-1" type="button" value={"X"} onClick={vis} />
+                        <input className='mx-1 rounded border-1' type="text" onChange={handleChange} />
+                        <input className="btn btn-primary btn-sm mx-1 px-4" type="submit" value={"↲"} />
+                        <input className="btn btn-danger btn-sm mx-1" type="button" value={"✕"} onClick={vis} />
                     </label>
                 </form>
-                <ul style={{ listStyle: 'number' }}>{taskItems}</ul>
             </section>
         </>
     )
